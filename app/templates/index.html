@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div>
+        <h3>Estudo Flak</h3>
+        <h5>@campcode Brasil</h5>
+    </div>
+
+    <div>
+        <p>Bem-vindo {{context.usuario}} à aula de Flask</p>
+        <p>Idade: {{context.idade}}</p>
+        <p>Profissão: {{context.profissao}}</p>
+
+        {% include 'nav.html' %}
+
+    </div>
+{% endblock %}

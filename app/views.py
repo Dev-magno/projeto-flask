@@ -38,3 +38,8 @@ def contatoLista():
     context = {'dados': dados.all()}
 
     return render_template('contato_lista.html', context=context)
+
+@app.route('/contato/<int:id>/')
+def contatoDatail(id):
+    obj = Contato.query.get(id)
+    return render_template('contato_datail.html', obj=obj)

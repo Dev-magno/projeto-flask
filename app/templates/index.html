@@ -5,12 +5,14 @@
         <h5>@campcode Brasil</h5>
     </div>
 
+        {% include 'nav.html' %}
+
     <div>
         <p>Bem-vindo {{context.usuario}} à aula de Flask</p>
         <p>Idade: {{context.idade}}</p>
         <p>Profissão: {{context.profissao}}</p>
 
-        {% include 'nav.html' %}
+        <img src="{{ url_for('static', filename='img/logo.png')}}" alt="">
 
     </div>
 {% endblock %}

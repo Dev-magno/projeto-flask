@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="container mt-4">
+        {% include 'nav.html' %}
+
+        <div class="row mt-4">
+            <h3>Mensagem</h3>
+            <hr>
+        </div>
+        
+        <div class="row">
+            <div class="col-12">
+                <h5>Post:</h5>
+                <div class="col-12 border rounded p-4 shadow">
+                    {{post.mensagem}}
+                </div>
+            </div>
+
+            <div class="col-12 mt-3">
+                <form action="" method="post" class="row mt-4 p-4 rounded border shadow">
+                    {{ form.csrf_token }}
+                    
+                    {{ form.comentario.label() }}
+                    {{ form.comentario(class="form-control") }}
+
+                    {{ form.btnsubmit(class="btn btn-primary col-12 mt-3") }}
+                </form>
+            </div>
+            <div class="col-12 mt-4 p-3 border rounded shadow">
+                <h3>Comentários</h3>
+                {% for c in post.comentarios %}
+                <p>
+                    <b>Usuário:</b> {{c.user.nome}} {{c.user.sobrenome}} <br>
+                    {{c.comentario}}
+                </p>
+                <hr>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

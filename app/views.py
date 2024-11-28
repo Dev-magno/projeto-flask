@@ -1,8 +1,8 @@
 from app import app, db
 from flask import render_template, url_for, request, redirect
 from flask_login import login_user, logout_user, current_user
-from app.models import Contato
-from app.forms import ContatoForm, UseForme, LoginForm
+from app.models import Contato, Post, PostComentarios
+from app.forms import ContatoForm, UseForme, LoginForm, PostForm, PostComentariosForm
 
 
 
@@ -38,6 +38,33 @@ def cadastro():
 def logout():
     logout_user()
     return redirect(url_for('homepage'))
+
+
+@app.route('/post/novo/', methods=['GET', 'POST'])
+def PostNovo():
+    form = PostForm()
+    if form.validate_on_submit():
+        form.save(current_user.id)
+        return redirect(url_for('homepage'))
+
+    return render_template('post_novo.html', form=form)
+
+
+@app.route('/post/list/')
+def PostLista():
+    posts = Post.query.all()
+
+    return render_template('lista.html', posts=posts)
+
+
+@app.route('/post/<int:id>', methods=['GET', 'POST'])
+def PostDetail(id):
+    post = Post.query.get(id)
+    form = PostComentariosForm()
+    if form.validate_on_submit():
+        form.save(current_user.id, post.id)
+        return redirect(url_for('PostDetail', id=id))
+    return render_template('post.html', post=post, form=form)
 
 
 

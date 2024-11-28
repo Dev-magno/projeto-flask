@@ -1,6 +1,6 @@
 from app import app, db
 from flask import render_template, url_for, request, redirect
-from flask_login import login_user, logout_user, current_user
+from flask_login import login_user, logout_user, current_user, login_required
 from app.models import Contato, Post, PostComentarios
 from app.forms import ContatoForm, UseForme, LoginForm, PostForm, PostComentariosForm
 
@@ -35,12 +35,14 @@ def cadastro():
 
 
 @app.route('/sair/')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('homepage'))
 
 
 @app.route('/post/novo/', methods=['GET', 'POST'])
+@login_required
 def PostNovo():
     form = PostForm()
     if form.validate_on_submit():
@@ -51,6 +53,7 @@ def PostNovo():
 
 
 @app.route('/post/list/')
+@login_required
 def PostLista():
     posts = Post.query.all()
 
@@ -58,6 +61,7 @@ def PostLista():
 
 
 @app.route('/post/<int:id>', methods=['GET', 'POST'])
+@login_required
 def PostDetail(id):
     post = Post.query.get(id)
     form = PostComentariosForm()
@@ -69,6 +73,7 @@ def PostDetail(id):
 
 
 @app.route('/contato/', methods = ['GET', 'POST'])
+@login_required
 def contato():
     form = ContatoForm()
     context = {}
@@ -81,7 +86,9 @@ def contato():
 
 
 @app.route('/contato/lista')
+@login_required
 def contatoLista():
+    # if current_user.id == 4: return redirect(url_for('homepage'))
     if request.method == 'GET':
         pesquisa = request.args.get('pesquisa', '')
 
@@ -94,6 +101,7 @@ def contatoLista():
 
 
 @app.route('/contato/<int:id>/')
+@login_required
 def contatoDatail(id):
     obj = Contato.query.get(id)
     return render_template('contato_datail.html', obj=obj)
